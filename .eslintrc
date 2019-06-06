@@ -11,7 +11,7 @@
       "error",
       {
         "ignoreSiblings": true,
-        "argsIgnorePattern": "res|next|^err"
+        "argsIgnorePattern": "req|res|next|^err"
       }
     ],
     "no-console": 0,

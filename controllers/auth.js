@@ -3,6 +3,7 @@
 /**
  * NPM import
  */
+const { validationResult } = require('express-validator/check');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -16,6 +17,17 @@ const User = require('../models/user');
  * Code
  */
 exports.signup = async (req, res, next) => {
+  // Request validation
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const error = new Error(
+      'Signup validation failed, entered data is incorrect.'
+    );
+    error.statusCode = 422;
+    error.data = errors.array();
+    throw error;
+  }
+
   const { firstname, lastname, email, password } = req.body;
 
   try {
