@@ -17,10 +17,7 @@ const uuidV4 = require('uuid/v4');
  * Local import
  */
 // Routes
-/**
- * ROUTES IMPORT
- * EX: const exempleRoutes = require('./routes/exemple');
- */
+const authRoutes = require('./routes/auth');
 
 /**
  * Code
@@ -83,10 +80,7 @@ app.use((req, res, next) => {
 });
 
 // Routes
-/**
- * YOUR ROUTES HERE
- * app.use('/exemple', exempleRoutes);
- */
+app.use('/auth', authRoutes);
 
 // Error Handling
 app.use((error, req, res, next) => {
@@ -103,7 +97,7 @@ app.use((error, req, res, next) => {
 const { DB_PASSWORD } = process.env;
 
 // Database URI
-const DB_URI = `mongodb+srv://maclaude:${DB_PASSWORD}@cluster-trip-planner-t7elm.mongodb.net/api?retryWrites=true&w=majority`
+const DB_URI = `mongodb+srv://maclaude:${DB_PASSWORD}@cluster-trip-planner-t7elm.mongodb.net/api?retryWrites=true&w=majority`;
 
 mongoose
   .connect(DB_URI, { useNewUrlParser: true })
