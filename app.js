@@ -103,7 +103,7 @@ app.use((error, req, res, next) => {
 const { DB_PASSWORD } = process.env;
 
 // Database URI
-const DB_URI = /* YOUR URI HERE */
+const DB_URI = `mongodb+srv://maclaude:${DB_PASSWORD}@cluster-trip-planner-t7elm.mongodb.net/api?retryWrites=true&w=majority`
 
 mongoose
   .connect(DB_URI, { useNewUrlParser: true })
