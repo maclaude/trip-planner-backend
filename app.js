@@ -18,6 +18,7 @@ const uuidV4 = require('uuid/v4');
  */
 // Routes
 const authRoutes = require('./routes/auth');
+const projectRoutes = require('./routes/project');
 
 /**
  * Code
@@ -81,6 +82,7 @@ app.use((req, res, next) => {
 
 // Routes
 app.use('/auth', authRoutes);
+app.use(projectRoutes);
 
 // Error Handling
 app.use((error, req, res, next) => {
