@@ -14,13 +14,23 @@ const projectSchema = new Schema(
       type: String,
       required: true,
     },
-    decription: {
+    description: {
       type: String,
       required: true,
     },
     destination: {
-      type: String,
-      required: true,
+      name: {
+        type: String,
+        required: true,
+      },
+      lat: {
+        type: Number,
+        required: true,
+      },
+      lng: {
+        type: Number,
+        required: true,
+      },
     },
     creator: {
       type: Schema.Types.ObjectId,
