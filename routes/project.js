@@ -8,6 +8,8 @@ const express = require('express');
  */
 // Controllers
 const projectController = require('../controllers/project');
+// Utils
+const projectValidation = require('../utils/validation/project-validation');
 
 /**
  * Code
@@ -18,7 +20,11 @@ const router = express.Router();
  * Routes
  */
 // POST /project/new-project
-router.post('/project/new-project', projectController.postProject);
+router.post(
+  '/project/new-project',
+  projectValidation.postProject,
+  projectController.postProject
+);
 
 /**
  * Export
