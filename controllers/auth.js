@@ -31,6 +31,16 @@ exports.signup = async (req, res, next) => {
   const { firstname, lastname, email, password } = req.body;
 
   try {
+    // Finding if a user already exists with this email
+    const user = await User.findOne({ email });
+
+    // If email address already used, throw an error
+    if (user) {
+      const error = new Error('Adresse email déjà utilisée');
+      error.statusCode = 422;
+      throw error;
+    }
+
     // Encrypting password
     const hashedPassword = await bcrypt.hash(password, 12);
 
@@ -62,7 +72,7 @@ exports.login = async (req, res, next) => {
     const user = await User.findOne({ email }).populate('projects');
     // Throw an error if nothing is retrieved
     if (!user) {
-      const error = new Error('No user found with this email');
+      const error = new Error('Aucun utilisateur trouvé avec cet email');
       error.statusCode = 401;
       throw error;
     }
@@ -71,7 +81,7 @@ exports.login = async (req, res, next) => {
     const passwordsMatched = await bcrypt.compare(password, user.password);
     // Throw an error if passwords don't match
     if (!passwordsMatched) {
-      const error = new Error('Password is incorrect');
+      const error = new Error('Le mot de passe est incorrect');
       error.statusCode = 404;
       throw error;
     }

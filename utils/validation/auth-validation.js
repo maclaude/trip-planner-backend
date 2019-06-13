@@ -6,12 +6,6 @@
 const { body } = require('express-validator/check');
 
 /**
- * Local import
- */
-// Models
-const User = require('../../models/user');
-
-/**
  * Code
  */
 exports.signup = [
@@ -25,16 +19,7 @@ exports.signup = [
     .isEmpty(),
   body('email')
     .isEmail()
-    .withMessage('Email address is not valid')
-    .custom((value, { req }) => {
-      return User.findOne({ email: value }).then(userDoc => {
-        if (userDoc) {
-          const error = 'Email address is already used';
-          return Promise.reject(error);
-        }
-        return true;
-      });
-    }),
+    .withMessage('Adresse email non valide'),
   body('password')
     .trim()
     .isLength({ min: 8 }),
