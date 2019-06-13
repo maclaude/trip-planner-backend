@@ -58,8 +58,8 @@ exports.login = async (req, res, next) => {
   const { email, password } = req.body;
 
   try {
-    // Finding current user by email
-    const user = await User.findOne({ email });
+    // Finding current user by email & Fetching user's projects data
+    const user = await User.findOne({ email }).populate('projects');
     // Throw an error if nothing is retrieved
     if (!user) {
       const error = new Error('No user found with this email');
@@ -86,8 +86,18 @@ exports.login = async (req, res, next) => {
       { expiresIn: '1h' }
     );
 
+    // Preparing response object
+    const response = {
+      id: user._id.toString(),
+      firstname: user.firstname,
+      lastname: user.lastname,
+      email: user.email,
+      avatar: user.avatar || 'default.png',
+      projects: user.projects,
+    };
+
     // Sending the response to the client
-    res.status(200).json({ token, userId: user._id.toString() });
+    res.status(200).json({ token, user: response });
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;
