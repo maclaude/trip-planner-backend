@@ -52,9 +52,31 @@ exports.postProject = async (req, res, next) => {
     await user.save();
 
     // Sending the response to the client
-    res
-      .status(201)
-      .json({ message: 'Project created', projectId: response._id });
+    res.status(201).json({
+      message: 'Votre nouveau projet a été crée avec succès!',
+      projectId: response._id,
+    });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    // Next to reach the error middleware
+    next(err);
+  }
+};
+
+exports.getUserProjects = async (req, res, next) => {
+  const { userId } = req;
+
+  try {
+    // Retrieving current user data
+    const user = await User.findById(userId).populate('projects');
+
+    // Sending the response to the client
+    res.status(202).json({
+      message: 'User projects founded',
+      userProjects: user.projects,
+    });
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;

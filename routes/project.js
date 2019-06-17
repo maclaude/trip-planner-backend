@@ -29,6 +29,9 @@ router.post(
   projectController.postProject
 );
 
+// GET /user/projects
+router.get('/user/projects', isAuth, projectController.getUserProjects);
+
 /**
  * Export
  */
