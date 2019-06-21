@@ -32,6 +32,9 @@ router.post(
 // GET /user/projects
 router.get('/user/projects', isAuth, projectController.getUserProjects);
 
+// POST /project/new-dates
+router.post('/project/new-dates', isAuth, projectController.postProjectDates);
+
 /**
  * Export
  */

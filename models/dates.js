@@ -8,31 +8,27 @@ const mongoose = require('mongoose');
  */
 const { Schema } = mongoose;
 
-const datesSchema = new Schema(
-  {
-    start_date: {
-      type: Date,
-      required: true,
-    },
-    end_date: {
-      type: Date,
-      required: true,
-    },
-    project: {
-      type: Schema.Types.ObjectId,
-      ref: 'Project',
-      required: true,
-    },
-    user_vote: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-      },
-    ],
+const datesSchema = new Schema({
+  start_date: {
+    type: Date,
+    required: true,
   },
-  // createdAt - updatedAt
-  { timestamps: true }
-);
+  end_date: {
+    type: Date,
+    required: true,
+  },
+  project: {
+    type: Schema.Types.ObjectId,
+    ref: 'Project',
+    required: true,
+  },
+  user_vote: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  ],
+});
 
 /**
  * Export

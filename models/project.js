@@ -43,13 +43,13 @@ const projectSchema = new Schema(
         ref: 'User',
       },
     ],
-    Suggestions: [
+    suggestions: [
       {
         type: Schema.Types.ObjectId,
         ref: 'Suggestion',
       },
     ],
-    Dates: [
+    dates: [
       {
         type: Schema.Types.ObjectId,
         ref: 'Dates',

@@ -69,7 +69,12 @@ exports.login = async (req, res, next) => {
 
   try {
     // Finding current user by email & Fetching user's projects data
-    const user = await User.findOne({ email }).populate('projects');
+    const user = await User.findOne({ email }).populate({
+      path: 'projects',
+      populate: {
+        path: 'dates',
+      },
+    });
     // Throw an error if nothing is retrieved
     if (!user) {
       const error = new Error('Aucun utilisateur trouvé avec cet email');
@@ -96,7 +101,7 @@ exports.login = async (req, res, next) => {
       { expiresIn: '1h' }
     );
 
-    // Preparing response object
+    // Response object
     const response = {
       id: user._id.toString(),
       firstname: user.firstname,
@@ -112,7 +117,6 @@ exports.login = async (req, res, next) => {
     if (!err.statusCode) {
       err.statusCode = 500;
     }
-    // Next to reach the error middleware
     next(err);
   }
 };
