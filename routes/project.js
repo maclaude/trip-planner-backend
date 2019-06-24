@@ -35,6 +35,13 @@ router.get('/user/projects', isAuth, projectController.getUserProjects);
 // POST /project/new-dates
 router.post('/project/new-dates', isAuth, projectController.postProjectDates);
 
+// DELETE /project/delete-dates
+router.delete(
+  '/project/delete-dates',
+  isAuth,
+  projectController.deleteProjectDates
+);
+
 /**
  * Export
  */

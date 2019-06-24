@@ -129,3 +129,41 @@ exports.postProjectDates = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.deleteProjectDates = async (req, res, next) => {
+  const { projectId, datesId } = req.body;
+
+  try {
+    // Fetching current dates
+    const dates = await Dates.findById(datesId);
+    // Throw an error if nothing is retrieved
+    if (!dates) {
+      const error = new Error('Could not find the requested dates.');
+      error.statusCode = 404;
+      throw error;
+    }
+
+    // Fetching current project
+    const project = await Project.findById(projectId);
+    // Throw an error if nothing is retrieved
+    if (!project) {
+      const error = new Error('Could not find the requested project.');
+      error.statusCode = 404;
+      throw error;
+    }
+
+    // Deleting dates from database
+    await Dates.findByIdAndDelete(datesId);
+    // Deleting dates from project's suggested dates
+    project.dates.pull(datesId);
+    await project.save();
+
+    // Sending the response to the client
+    res.status(200).json({ message: 'Dates deleted' });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+};
