@@ -72,7 +72,7 @@ exports.login = async (req, res, next) => {
     const user = await User.findOne({ email }).populate({
       path: 'projects',
       populate: {
-        path: 'dates',
+        path: 'dates participants',
       },
     });
     // Throw an error if nothing is retrieved
@@ -98,7 +98,7 @@ exports.login = async (req, res, next) => {
         userId: user._id.toString(),
       },
       'secret',
-      { expiresIn: '1h' }
+      { expiresIn: '12h' }
     );
 
     // Response object

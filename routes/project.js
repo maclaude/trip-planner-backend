@@ -42,6 +42,9 @@ router.delete(
   projectController.deleteProjectDates
 );
 
+// PUT /project/vote-dates
+router.put('/project/vote-dates', isAuth, projectController.voteProjectDates);
+
 /**
  * Export
  */

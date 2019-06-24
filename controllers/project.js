@@ -61,7 +61,7 @@ exports.postProject = async (req, res, next) => {
 
     // Sending the response to the client
     res.status(201).json({
-      message: 'Votre nouveau projet a été crée avec succès!',
+      message: 'Project created',
       data,
     });
   } catch (err) {
@@ -81,7 +81,7 @@ exports.getUserProjects = async (req, res, next) => {
     const user = await User.findById(userId).populate({
       path: 'projects',
       populate: {
-        path: 'dates',
+        path: 'dates participants',
       },
     });
 
@@ -119,9 +119,7 @@ exports.postProjectDates = async (req, res, next) => {
     await project.save();
 
     // Sending the response to the client
-    res.status(201).json({
-      message: 'Dates ajoutées avec succès',
-    });
+    res.status(201).json({ message: 'Project dates added' });
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;
@@ -159,7 +157,48 @@ exports.deleteProjectDates = async (req, res, next) => {
     await project.save();
 
     // Sending the response to the client
-    res.status(200).json({ message: 'Dates deleted' });
+    res.status(200).json({ message: 'Project dates deleted' });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+};
+
+exports.voteProjectDates = async (req, res, next) => {
+  const { datesId } = req.body;
+  const currentUserId = req.userId;
+
+  try {
+    // Fetching current dates
+    const currentDates = await Dates.findById(datesId);
+    // Throw an error if nothing is retrieved
+    if (!currentDates) {
+      const error = new Error('Could not find the requested dates.');
+      error.statusCode = 404;
+      throw error;
+    }
+
+    // Finding if current user has already vote on current dates
+    const currentUserVoteOnCurrentDates = await Dates.findOne({
+      _id: datesId,
+      user_vote: { $eq: currentUserId },
+    });
+
+    if (!currentUserVoteOnCurrentDates) {
+      // Pushing current user's vote on current dates user_vote
+      currentDates.user_vote.push(currentUserId);
+    } else if (currentUserVoteOnCurrentDates) {
+      // Pulling current user's vote on current dates user_vote
+      currentDates.user_vote.pull(currentUserId);
+    }
+
+    // Saving updated dates
+    await currentDates.save();
+
+    // Sending the response to the client
+    res.status(202).json({ message: 'Current user vote accepted' });
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;
