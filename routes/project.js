@@ -45,6 +45,32 @@ router.delete(
 // PUT /project/vote-dates
 router.put('/project/vote-dates', isAuth, projectController.voteProjectDates);
 
+// POST /project/add-participants
+router.post(
+  '/project/add-participants',
+  isAuth,
+  projectController.sendProjectInvitation
+);
+
+// GET /project/invitation/:token
+router.get(
+  '/project/invitation/:token',
+  projectController.checkInvitationToken
+);
+
+// POST /user/invitation
+router.post('/user/invitation', isAuth, projectController.addUserInvitation);
+
+// GET /user/invitations
+router.get('/user/invitations', isAuth, projectController.getUserInvitations);
+
+// POST /user/invitation-response
+router.post(
+  '/user/invitation-response',
+  isAuth,
+  projectController.postInvitationResponse
+);
+
 /**
  * Export
  */

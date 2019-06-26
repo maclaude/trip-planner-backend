@@ -53,7 +53,7 @@ exports.signup = async (req, res, next) => {
     });
     const response = await newUser.save();
 
-    // Sending the response to the client
+    // Sending client response
     res.status(201).json({ message: 'User created', userId: response._id });
   } catch (err) {
     if (!err.statusCode) {

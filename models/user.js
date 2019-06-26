@@ -35,6 +35,12 @@ const userSchema = new Schema(
         ref: 'Project',
       },
     ],
+    invitations: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Project',
+      },
+    ],
   },
   // createdAt - updatedAt
   { timestamps: true }
