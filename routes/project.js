@@ -29,47 +29,24 @@ router.post(
   projectController.postProject
 );
 
-// GET /user/projects
-router.get('/user/projects', isAuth, projectController.getUserProjects);
-
 // POST /project/new-dates
-router.post('/project/new-dates', isAuth, projectController.postProjectDates);
+router.post('/new-dates', isAuth, projectController.postProjectDates);
 
 // DELETE /project/delete-dates
-router.delete(
-  '/project/delete-dates',
-  isAuth,
-  projectController.deleteProjectDates
-);
+router.delete('/delete-dates', isAuth, projectController.deleteProjectDates);
 
 // PUT /project/vote-dates
-router.put('/project/vote-dates', isAuth, projectController.voteProjectDates);
+router.put('/vote-dates', isAuth, projectController.voteProjectDates);
 
 // POST /project/add-participants
 router.post(
-  '/project/add-participants',
+  '/add-participants',
   isAuth,
   projectController.sendProjectInvitation
 );
 
 // GET /project/invitation/:token
-router.get(
-  '/project/invitation/:token',
-  projectController.checkInvitationToken
-);
-
-// POST /user/invitation
-router.post('/user/invitation', isAuth, projectController.addUserInvitation);
-
-// GET /user/invitations
-router.get('/user/invitations', isAuth, projectController.getUserInvitations);
-
-// POST /user/invitation-response
-router.post(
-  '/user/invitation-response',
-  isAuth,
-  projectController.postInvitationResponse
-);
+router.get('/invitation/:token', projectController.checkInvitationToken);
 
 /**
  * Export

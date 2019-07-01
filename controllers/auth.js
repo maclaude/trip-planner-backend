@@ -72,9 +72,11 @@ exports.login = async (req, res, next) => {
     const user = await User.findOne({ email }).populate({
       path: 'projects',
       populate: {
-        path: 'dates participants',
+        path: 'participants dates',
+        select: 'firstname lastname avatar start_date end_date user_vote',
       },
     });
+
     // Throw an error if nothing is retrieved
     if (!user) {
       const error = new Error('Aucun utilisateur trouvé avec cet email');
