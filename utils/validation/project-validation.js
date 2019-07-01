@@ -8,7 +8,7 @@ const { body } = require('express-validator/check');
 /**
  * Code
  */
-exports.postProject = [
+exports.postNewProject = [
   body('title')
     .trim()
     .not()

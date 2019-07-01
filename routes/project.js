@@ -23,11 +23,14 @@ const router = express.Router();
  */
 // POST /project/new-project
 router.post(
-  '/project/new-project',
+  '/new-project',
   isAuth,
-  projectValidation.postProject,
-  projectController.postProject
+  projectValidation.postNewProject,
+  projectController.postNewProject
 );
+
+// GET /project/user-role
+router.post('/user-role', isAuth, projectController.getProjectUserRole);
 
 // POST /project/new-dates
 router.post('/new-dates', isAuth, projectController.postProjectDates);
@@ -46,7 +49,7 @@ router.post(
 );
 
 // GET /project/invitation/:token
-router.get('/invitation/:token', projectController.checkInvitationToken);
+router.get('/invitation/:token', projectController.checkProjectInvitationToken);
 
 /**
  * Export

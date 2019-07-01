@@ -32,7 +32,7 @@ const transporter = nodemailer.createTransport(
   })
 );
 
-exports.postProject = async (req, res, next) => {
+exports.postNewProject = async (req, res, next) => {
   // Request validation
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -89,6 +89,40 @@ exports.postProject = async (req, res, next) => {
   }
 };
 
+exports.getProjectUserRole = async (req, res, next) => {
+  const { projectId } = req.body;
+  const { userId } = req;
+
+  try {
+    // Finding current project
+    const project = await Project.findById(projectId);
+    // Throw an error if nothing is retrieved
+    if (!project) {
+      const error = new Error('Could not find the requested project');
+      error.statusCode = 404;
+      throw error;
+    }
+
+    // Sending client response
+    if (project.creator.toString() === userId.toString()) {
+      res.status(200).json({
+        message: 'User role found',
+        role: 'creator',
+      });
+    } else {
+      res.status(200).json({
+        message: 'User role found',
+        role: 'participant',
+      });
+    }
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+};
+
 exports.postProjectDates = async (req, res, next) => {
   const { startDate, endDate, projectId } = req.body;
 
@@ -101,8 +135,14 @@ exports.postProjectDates = async (req, res, next) => {
     });
     await newDates.save();
 
-    // Findin current project
+    // Finding current project
     const project = await Project.findById(projectId);
+    // Throw an error if nothing is retrieved
+    if (!project) {
+      const error = new Error('Could not find the requested project');
+      error.statusCode = 404;
+      throw error;
+    }
     // Adding newDates objectId to the project's dates
     project.dates.push(newDates);
     // Saving updates
@@ -135,7 +175,7 @@ exports.deleteProjectDates = async (req, res, next) => {
     const project = await Project.findById(projectId);
     // Throw an error if nothing is retrieved
     if (!project) {
-      const error = new Error('Could not find the requested project.');
+      const error = new Error('Could not find the requested project');
       error.statusCode = 404;
       throw error;
     }
@@ -165,7 +205,7 @@ exports.voteProjectDates = async (req, res, next) => {
     const currentDates = await Dates.findById(datesId);
     // Throw an error if nothing is retrieved
     if (!currentDates) {
-      const error = new Error('Could not find the requested dates.');
+      const error = new Error('Could not find the requested dates');
       error.statusCode = 404;
       throw error;
     }
@@ -243,7 +283,7 @@ exports.sendProjectInvitation = async (req, res, next) => {
   }
 };
 
-exports.checkInvitationToken = async (req, res, next) => {
+exports.checkProjectInvitationToken = async (req, res, next) => {
   const { token } = req.params;
 
   try {
