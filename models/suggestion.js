@@ -26,9 +26,9 @@ const suggestionSchema = new Schema(
       type: Number,
       required: true,
     },
-    suggestion_gender: {
-      type: Schema.Types.ObjectId,
-      ref: 'Suggestion_gender',
+    suggestion_type: {
+      type: Schema.Types.Number,
+      ref: 'Suggestion_type',
       required: true,
     },
     author: {

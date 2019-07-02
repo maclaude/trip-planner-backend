@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
  */
 const { Schema } = mongoose;
 
-const suggestionGenderSchema = new Schema({
+const suggestionTypeSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -18,4 +18,4 @@ const suggestionGenderSchema = new Schema({
 /**
  * Export
  */
-module.exports = mongoose.model('Suggestion_gender', suggestionGenderSchema);
+module.exports = mongoose.model('Suggestion_type', suggestionTypeSchema);

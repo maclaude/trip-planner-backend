@@ -29,7 +29,7 @@ router.post(
   projectController.postNewProject
 );
 
-// GET /project/user-role
+// POST /project/user-role
 router.post('/user-role', isAuth, projectController.getProjectUserRole);
 
 // POST /project/new-dates
@@ -50,6 +50,9 @@ router.post(
 
 // GET /project/invitation/:token
 router.get('/invitation/:token', projectController.checkProjectInvitationToken);
+
+// POST /project/new-suggestion
+router.post('/new-suggestion', isAuth, projectController.postNewSuggestion);
 
 /**
  * Export

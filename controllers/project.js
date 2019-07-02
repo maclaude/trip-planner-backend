@@ -16,6 +16,7 @@ const jwt = require('jsonwebtoken');
 const Project = require('../models/project');
 const User = require('../models/user');
 const Dates = require('../models/dates');
+const Suggestion = require('../models/suggestion');
 
 /**
  * Code
@@ -63,6 +64,12 @@ exports.postNewProject = async (req, res, next) => {
 
     // Finding creator user
     const user = await User.findById(userId);
+    // Throw an error if nothing is retrieved
+    if (!user) {
+      const error = new Error('Could not find the requested user');
+      error.statusCode = 404;
+      throw error;
+    }
     // Adding newProject objectId to user's projects
     user.projects.push(newProject);
     // Saving updates
@@ -166,7 +173,7 @@ exports.deleteProjectDates = async (req, res, next) => {
     const dates = await Dates.findById(datesId);
     // Throw an error if nothing is retrieved
     if (!dates) {
-      const error = new Error('Could not find the requested dates.');
+      const error = new Error('Could not find the requested dates');
       error.statusCode = 404;
       throw error;
     }
@@ -306,6 +313,57 @@ exports.checkProjectInvitationToken = async (req, res, next) => {
     if (!err.statusCode) {
       err.statusCode = 500;
     }
+    next(err);
+  }
+};
+
+exports.postNewSuggestion = async (req, res, next) => {
+  const {
+    title,
+    description,
+    url,
+    price,
+    suggestionType,
+    userId,
+    projectId,
+  } = req.body;
+
+  try {
+    // Create new suggestion
+    const newSuggestion = await new Suggestion({
+      title,
+      description,
+      url,
+      price,
+      suggestion_type: suggestionType,
+      author: userId,
+      project: projectId,
+    });
+    const response = await newSuggestion.save();
+
+    // Finding current project
+    const project = await Project.findById(projectId);
+    // Throw an error if nothing is retrieved
+    if (!project) {
+      const error = new Error('Could not find the requested project');
+      error.statusCode = 404;
+      throw error;
+    }
+    // Adding newSuggestion objectId to project's suggestions
+    project.suggestions.push(newSuggestion);
+    // Saving updates
+    await project.save();
+
+    // Sending client response
+    res.status(201).json({
+      message: 'Suggestion created',
+      suggestionId: response._id,
+    });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    // Redirecting to error middleware
     next(err);
   }
 };
