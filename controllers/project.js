@@ -367,3 +367,41 @@ exports.postNewSuggestion = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.getProjectSuggestions = async (req, res, next) => {
+  const { projectId } = req.params;
+
+  try {
+    // Finding current project suggestions
+    const suggestions = await Suggestion.find({
+      project: projectId,
+    })
+      .populate({ path: 'suggestion_type author', select: 'name firstname' })
+      .lean();
+
+    // Throw an error if nothing is retrieved
+    if (!suggestions) {
+      const error = new Error('Database query error');
+      error.statusCode = 401;
+      throw error;
+    }
+
+    // Sending client response
+    if (suggestions.length === 0) {
+      res.status(204).json({
+        message: 'Project has no suggestions',
+      });
+    } else {
+      res.status(200).json({
+        message: 'Project suggestions founded',
+        suggestions,
+      });
+    }
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    // Redirecting to error middleware
+    next(err);
+  }
+};

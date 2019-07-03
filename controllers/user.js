@@ -14,14 +14,16 @@ exports.getUserProjects = async (req, res, next) => {
   const { userId } = req;
 
   try {
-    // Retrieving current user data
-    const user = await User.findById(userId).populate({
-      path: 'projects',
-      populate: {
-        path: 'participants dates',
-        select: 'firstname lastname avatar start_date end_date user_vote',
-      },
-    });
+    // Finding current user data
+    const user = await User.findById(userId)
+      .populate({
+        path: 'projects',
+        populate: {
+          path: 'participants dates',
+          select: 'firstname lastname avatar start_date end_date user_vote',
+        },
+      })
+      .lean();
 
     // Throw an error if nothing is retrieved
     if (!user) {
@@ -36,7 +38,7 @@ exports.getUserProjects = async (req, res, next) => {
         message: 'No user projects founded',
       });
     } else {
-      res.status(202).json({
+      res.status(200).json({
         message: 'User projects founded',
         userProjects: user.projects,
       });
@@ -100,7 +102,7 @@ exports.getUserProjectsInvitations = async (req, res, next) => {
         message: 'No user invitations founded',
       });
     } else {
-      res.status(202).json({
+      res.status(200).json({
         message: 'User invitations founded',
         userInvitations: user.invitations,
       });
@@ -118,7 +120,7 @@ exports.postUserProjectInvitationResponse = async (req, res, next) => {
   const { response, projectId } = req.body;
 
   try {
-    // Retrieving current user data
+    // Finding current user data
     const user = await User.findById(userId);
 
     // Throw an error if nothing is retrieved

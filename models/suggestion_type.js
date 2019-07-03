@@ -9,6 +9,10 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const suggestionTypeSchema = new Schema({
+  _id: {
+    type: Number,
+    required: true,
+  },
   name: {
     type: String,
     required: true,

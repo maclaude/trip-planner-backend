@@ -54,6 +54,13 @@ router.get('/invitation/:token', projectController.checkProjectInvitationToken);
 // POST /project/new-suggestion
 router.post('/new-suggestion', isAuth, projectController.postNewSuggestion);
 
+// GET /project/suggestions/:projectId
+router.get(
+  '/suggestions/:projectId',
+  isAuth,
+  projectController.getProjectSuggestions
+);
+
 /**
  * Export
  */

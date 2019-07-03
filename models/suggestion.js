@@ -4,6 +4,13 @@
 const mongoose = require('mongoose');
 
 /**
+ * Local import
+ */
+// Models
+// eslint-disable-next-line no-unused-vars
+const SuggestionType = require('./suggestion_type');
+
+/**
  * Code
  */
 const { Schema } = mongoose;
@@ -16,18 +23,18 @@ const suggestionSchema = new Schema(
     },
     description: {
       type: String,
-      required: true,
+      required: false,
     },
     url: {
       type: String,
-      required: true,
+      required: false,
     },
     price: {
       type: Number,
-      required: true,
+      required: false,
     },
     suggestion_type: {
-      type: Schema.Types.Number,
+      type: Number,
       ref: 'Suggestion_type',
       required: true,
     },

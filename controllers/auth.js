@@ -69,13 +69,15 @@ exports.login = async (req, res, next) => {
 
   try {
     // Finding current user by email & Fetching user's projects data
-    const user = await User.findOne({ email }).populate({
-      path: 'projects',
-      populate: {
-        path: 'participants dates',
-        select: 'firstname lastname avatar start_date end_date user_vote',
-      },
-    });
+    const user = await User.findOne({ email })
+      .populate({
+        path: 'projects',
+        populate: {
+          path: 'participants dates',
+          select: 'firstname lastname avatar start_date end_date user_vote',
+        },
+      })
+      .lean();
 
     // Throw an error if nothing is retrieved
     if (!user) {
