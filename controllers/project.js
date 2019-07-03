@@ -97,7 +97,7 @@ exports.postNewProject = async (req, res, next) => {
 };
 
 exports.getProjectUserRole = async (req, res, next) => {
-  const { projectId } = req.body;
+  const { projectId } = req.params;
   const { userId } = req;
 
   try {

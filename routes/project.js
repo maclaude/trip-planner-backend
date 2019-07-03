@@ -29,8 +29,12 @@ router.post(
   projectController.postNewProject
 );
 
-// POST /project/user-role
-router.post('/user-role', isAuth, projectController.getProjectUserRole);
+// GET /project/user-role/:projectId
+router.get(
+  '/user-role/:projectId',
+  isAuth,
+  projectController.getProjectUserRole
+);
 
 // POST /project/new-dates
 router.post('/new-dates', isAuth, projectController.postProjectDates);
