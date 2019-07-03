@@ -65,6 +65,9 @@ router.get(
   projectController.getProjectSuggestions
 );
 
+// PUT /project/vote-suggestion
+router.put('/vote-suggestion', isAuth, projectController.voteProjectSuggestion);
+
 /**
  * Export
  */

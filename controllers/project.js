@@ -235,7 +235,7 @@ exports.voteProjectDates = async (req, res, next) => {
     await currentDates.save();
 
     // Sending client response
-    res.status(202).json({ message: 'Current user vote accepted' });
+    res.status(202).json({ message: 'User vote on project dates accepted' });
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;
@@ -402,6 +402,49 @@ exports.getProjectSuggestions = async (req, res, next) => {
       err.statusCode = 500;
     }
     // Redirecting to error middleware
+    next(err);
+  }
+};
+
+exports.voteProjectSuggestion = async (req, res, next) => {
+  const { suggestionId } = req.body;
+  const currentUserId = req.userId;
+
+  try {
+    // Find current project suggestions
+    const currentSuggestion = await Suggestion.findById(suggestionId);
+    // Throw an error if nothing is retrieved
+    if (!currentSuggestion) {
+      const error = new Error('Could not find the requested suggestion');
+      error.statusCode = 404;
+      throw error;
+    }
+
+    // Finding if current user has already vote on current project dates
+    const currentUserVoteOnCurrentSuggestion = await Suggestion.findOne({
+      _id: suggestionId,
+      user_vote: { $eq: currentUserId },
+    });
+
+    if (!currentUserVoteOnCurrentSuggestion) {
+      // Pushing current user's vote
+      currentSuggestion.user_vote.push(currentUserId);
+    } else if (currentUserVoteOnCurrentSuggestion) {
+      // Pulling current user's vote
+      currentSuggestion.user_vote.pull(currentUserId);
+    }
+
+    // Saving updates
+    await currentSuggestion.save();
+
+    // Sending client response
+    res
+      .status(202)
+      .json({ message: 'User vote on project suggestion accepted' });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
     next(err);
   }
 };
