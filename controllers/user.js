@@ -51,6 +51,41 @@ exports.getUserProjects = async (req, res, next) => {
   }
 };
 
+exports.getUserInformations = async (req, res, next) => {
+  const { userId } = req;
+
+  try {
+    // Finding current user
+    const user = await User.findById(userId);
+
+    // Throw an error if nothing is retrieved
+    if (!user) {
+      const error = new Error('No user found with the given _id');
+      error.statusCode = 401;
+      throw error;
+    }
+
+    // Response object
+    const response = {
+      firstname: user.firstname,
+      lastname: user.lastname,
+      email: user.email,
+      avatar: user.avatar || 'default.png',
+    };
+
+    // Sending client response
+    res.status(200).json({
+      message: 'User information founded',
+      user: response,
+    });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+};
+
 exports.addUserProjectInvitation = async (req, res, next) => {
   const { projectId } = req.body;
   const { userId } = req;
@@ -91,7 +126,7 @@ exports.getUserProjectsInvitations = async (req, res, next) => {
 
     // Throw an error if nothing is retrieved
     if (!user) {
-      const error = new Error('No user found with this email');
+      const error = new Error('No user found with the given _id');
       error.statusCode = 401;
       throw error;
     }

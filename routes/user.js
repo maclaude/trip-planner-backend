@@ -22,6 +22,9 @@ const router = express.Router();
 // GET /user/projects
 router.get('/projects', isAuth, userController.getUserProjects);
 
+// GET /user/informations
+router.get('/informations', isAuth, userController.getUserInformations);
+
 // POST /user/invitation
 router.post('/invitation', isAuth, userController.addUserProjectInvitation);
 
