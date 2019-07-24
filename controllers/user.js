@@ -86,6 +86,39 @@ exports.getUserInformations = async (req, res, next) => {
   }
 };
 
+exports.updateUserInformations = async (req, res, next) => {
+  const { userId } = req;
+  const { lastname, firstname, email } = req.body;
+
+  try {
+    // Finding current user
+    const user = await User.findById(userId);
+
+    // Throw an error if nothing is retrieved
+    if (!user) {
+      const error = new Error('No user found with the given _id');
+      error.statusCode = 401;
+      throw error;
+    }
+
+    // Updating user
+    user.firstname = firstname;
+    user.lastname = lastname;
+    user.email = email;
+
+    // Saving updated user
+    await user.save();
+
+    // Sending client response
+    res.status(200).json({ message: 'User informations updated' });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+};
+
 exports.addUserProjectInvitation = async (req, res, next) => {
   const { projectId } = req.body;
   const { userId } = req;

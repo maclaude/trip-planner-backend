@@ -25,6 +25,9 @@ router.get('/projects', isAuth, userController.getUserProjects);
 // GET /user/informations
 router.get('/informations', isAuth, userController.getUserInformations);
 
+// PUT /user/informations
+router.put('/informations', isAuth, userController.updateUserInformations);
+
 // POST /user/invitation
 router.post('/invitation', isAuth, userController.addUserProjectInvitation);
 
