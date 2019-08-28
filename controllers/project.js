@@ -376,7 +376,7 @@ exports.getProjectSuggestions = async (req, res, next) => {
     const suggestions = await Suggestion.find({
       project: projectId,
     })
-      .populate({ path: 'suggestion_type author', select: 'name firstname' })
+      .populate({ path: 'suggestionType author', select: 'name firstname' })
       .lean();
 
     // Throw an error if nothing is retrieved

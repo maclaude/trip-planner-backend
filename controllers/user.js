@@ -88,7 +88,7 @@ exports.getUserInformations = async (req, res, next) => {
 
 exports.updateUserInformations = async (req, res, next) => {
   const { userId } = req;
-  const { lastname, firstname, email } = req.body;
+  const { lastname, firstname, email, avatar } = req.body;
 
   try {
     // Finding current user

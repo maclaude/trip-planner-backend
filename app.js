@@ -97,17 +97,21 @@ app.use((error, req, res, next) => {
 /**
  * Database connexion with Mongoose
  */
-// Database password
-const { DB_PASSWORD } = process.env;
+// Database env variables
+const {
+  MONGO_DB_USER,
+  MONGO_DB_PASSWORD,
+  MONGO_DB_DEFAULT_DATABASE,
+} = process.env;
 
 // Database URI
-const DB_URI = `mongodb+srv://maclaude:${DB_PASSWORD}@cluster-trip-planner-t7elm.mongodb.net/api?retryWrites=true&w=majority`;
+const DB_URI = `mongodb+srv://${MONGO_DB_USER}:${MONGO_DB_PASSWORD}@cluster-trip-planner-t7elm.mongodb.net/${MONGO_DB_DEFAULT_DATABASE}?retryWrites=true&w=majority`;
 
 mongoose
   .connect(DB_URI, { useNewUrlParser: true })
   .then(response => {
     console.log('Connected');
     // Starting the server
-    app.listen(8000);
+    app.listen(process.env.PORT || 8000);
   })
   .catch(err => console.log(err));
