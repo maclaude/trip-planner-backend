@@ -12,6 +12,7 @@ const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const multer = require('multer');
 const uuidV4 = require('uuid/v4');
+const helmet = require('helmet');
 
 /**
  * Local import
@@ -80,6 +81,9 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   next();
 });
+
+// Initialize helmet (set HTTP response header for security purpose)
+app.use(helmet());
 
 // Routes
 app.use('/auth', authRoutes);
