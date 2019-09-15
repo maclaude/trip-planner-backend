@@ -13,6 +13,7 @@ const mongoose = require('mongoose');
 const multer = require('multer');
 const uuidV4 = require('uuid/v4');
 const helmet = require('helmet');
+const compression = require('compression');
 
 /**
  * Local import
@@ -84,6 +85,9 @@ app.use((req, res, next) => {
 
 // Initialize helmet (set HTTP response header for security purpose)
 app.use(helmet());
+
+// Compress all responses
+app.use(compression());
 
 // Routes
 app.use('/auth', authRoutes);
