@@ -275,7 +275,7 @@ exports.sendProjectInvitation = async (req, res, next) => {
           <p>Tu as été invité par ${currentUsername} à rejoindre son nouveau projet ${projectTitle} &#127881;</p>
           <p>En acceptant l'invitation tu pourras participer à l'organisation de ce voyage
           grâce à toutes les fonctionnalités que propose notre platforme Trip-planner</p>
-          <p>Cliques sur le <a href="http://localhost:8000/project/invitation/${token}">lien suivant</a> pour commencer l'aventure &#128640;<p>
+          <p>Cliques sur le <a href="http://www.trip-planner.site/project/invitation/${token}">lien suivant</a> pour commencer l'aventure &#128640;<p>
         </div>
       `,
     });
@@ -308,7 +308,7 @@ exports.checkProjectInvitationToken = async (req, res, next) => {
     const { projectId } = decodedToken;
 
     // Redirecting the client
-    res.redirect(`http://wwww.trip-planner.site/invitation/${projectId}`);
+    res.redirect(`http://www.trip-planner.site/invitation/${projectId}`);
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;
