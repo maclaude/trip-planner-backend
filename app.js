@@ -12,6 +12,7 @@ const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const multer = require('multer');
 const uuidV4 = require('uuid/v4');
+const morgan = require('morgan');
 const helmet = require('helmet');
 const compression = require('compression');
 
@@ -82,6 +83,9 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   next();
 });
+
+// Morgan request logger
+app.use(morgan('dev'));
 
 // Initialize helmet (set HTTP response header for security purpose)
 app.use(helmet());

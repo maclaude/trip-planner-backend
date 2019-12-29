@@ -308,7 +308,7 @@ exports.checkProjectInvitationToken = async (req, res, next) => {
     const { projectId } = decodedToken;
 
     // Redirecting the client
-    res.redirect(`http://localhost:8080/invitation/${projectId}`);
+    res.redirect(`http://wwww.trip-planner.site/invitation/${projectId}`);
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;
